@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BLAZZY</title>
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: black;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Background Video */
+        #background video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+/* Menu Button in Top-Right Corner */
+.menu-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 1000;
+}
+
+.menu-button {
+    font-size: 24px; /* Adjusted font size */
+    background-color: transparent;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1.5px; /* Adjusted letter spacing */
+}
+
+.menu-button:hover {
+    color: #140202;
+    transform: scale(1.1);
+}
+
+/* Centered Menu */
+.menu {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.5);
+    padding: 20px;
+    z-index: 999;
+}
+
+/* Menu Items */
+.menu-item {
+    padding: 10px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+    text-transform: uppercase;
+    letter-spacing: 1.2px; /* Adjusted letter spacing */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.menu-item:hover {
+    background-color: #0030c0;
+    color: black;
+    transform: scale(1.1);
+}
+
+/* Content Tap */
+.content-tap {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 35px;
+    font-size: 16px;
+    overflow-y: auto;
+    box-shadow: 0 4px 20px rgba(0, 255, 255, 0.5);
+    transition: all 0.5s ease;
+}
+
+.content-tap.show {
+    display: block;
+}
+
+/* Button Styling */
+a.button-link {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #ff0000;
+    color: black;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+a.button-link:hover {
+    background-color: white;
+    color: black;
+    transform: scale(1.1);
+}
+
+/* Close Button */
+.close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #ff1a1a;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+        .close-button:hover {
+            background-color: white;
+            color: black;
+        }
+
+        /* Button Styling */
+        a.button-link {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #ff0000;
+            color: black;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 18px;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        a.button-link:hover {
+            background-color: white;
+            color: black;
+            transform: scale(1.1);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 255, 255, 0.5);
+            padding: 10px;
+            z-index: 200;
+        }
+
+        .music-controls button {
+            background: #675a59;
+            border: none;
+            padding: 10px;
+            color: black;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .music-controls button:hover {
+            background: white;
+        }
+
+        .slider {
+            margin: 5px;
+        }
+
+
+
+    /* Moving Text Slider at Bottom */
+    .slider {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            color: white;
+            font-size: 20px;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            text-align: center;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .moving-text {
+            display: inline-block;
+            animation: moveText 10s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes moveText {
+            0% {
+                transform: translateX(100%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+
+        /* Custom Cursor */
+        body {
+            cursor: url(''), auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Video Canvas Background -->
+    <div id="background">
+        <video autoplay muted loop id="bg-video">
+            <source src="CANVAS.mp4" type="video/mp4">
+        </video>
+    </div>
+
+ <!-- Main Menu -->
+ <div class="menu-container">
+    <button class="menu-button" onclick="toggleMenu()">☰</button>
+    <div id="menu" class="menu">
+        <div class="menu-item" onclick="goHome()">🏠 Home</div>
+        <div class="menu-item" onclick="openTap('claimDrop')">🎁 Claim Drop</div>
+        <div class="menu-item" onclick="openTap('exchangesSwap')">🔄 Exchanges Swap</div>
+        <div class="menu-item" onclick="openTap('roadMap')">🗺️ Road Map</div>
+        <div class="menu-item" onclick="openTap('tokenDistribution')">📊 Token Distribution</div>
+        <div class="menu-item" onclick="openTap('metaRoom')">🛸 Meta Room</div>
+        <div class="menu-item" onclick="openTap('socialMedia')">📱 Social Media</div>
+        <div class="menu-item" onclick="openTap('livePrice')">💰 Live Price</div>
+        <div class="menu-item" onclick="openTap('telegramAI')">🤖 Telegram AI</div>
+        <div class="menu-item" onclick="openTap('stake')">💎 Stake</div>
+        <div class="menu-item" onclick="openTap('security')">🔒 Security</div>
+        <div class="menu-item" onclick="openTap('explorer')">🌐 Explorer</div>
+        <div class="menu-item coming-soon">🎨 Comics, Music, Video AI (Coming Soon)</div>
+    </div>
+</div>
+
+
+<!-- Content Taps -->
+<div id="claimDrop" class="content-tap">
+    <h2>🎁✨ BLAZZY DROP NOW 🚀🔥</h2>
+    <p>🌟 <strong>🎉 Join our community drop now! 🎉</strong> 🌟 <br>
+        🎊 A whopping <strong>45,000,000 tokens</strong> 🎊 are available as rewards! 💰 Don’t miss this golden chance to be part of the amazing Blazzy community. 🌍💎 <br>
+        <p>👉 Click below to claim your share today: 
+            <a href="https://taskon.xyz/quest/790757682" target="_blank" rel="noopener" class="button-link">Taskon Drop 🔗✨</a>
+
+                
+            </a> 
+            and grab your rewards! 🎯🪙
+        </p>
+        
+    <img src="AIRDROP.png" alt="Blazzy Drop" style="width: 100%; animation: fadeIn 2s;">
+</div>
+
+<div id="exchangesSwap" class="content-tap">
+    <h2>Exchange Swap</h2>
+    <h2> 🔥✨ Blazzy Swap 🚀🔄 All ExchangesSwap 🌍⚡</h2>
+    
+    <a href="https://www.dextools.io/app/en/cronos/pair-explorer/0x5f028f49a7443f34aedfc19ed986c92243d98ef5?t=1733156041530" target="_blank" class="button-link">
+        <img src="DEXTOOLS.jpeg" alt="DEXTools" /> DEXTools
+    </a>
+    <a href="https://www.geckoterminal.com/es/cro/pools/0x5f028f49a7443f34aedfc19ed986c92243d98ef5" target="_blank" class="button-link">
+        <img src="GECKO.jpg" alt="GeckoTerminal" /> GeckoTerminal
+    </a>
+    <a href="https://app.cronaswap.org/swap?outputCurrency=0x9ef3fc220867f6cf5655db3d950cda67a3a92f9f" target="_blank" class="button-link">
+        <img src="CRONASWAP.png" alt="Cronaswap" /> Cronaswap
+    </a>
+    <a href="https://app.cronaswap.org/swap?outputCurrency=0x9ef3fc220867f6cf5655db3d950cda67a3a92f9f" target="_blank" class="button-link">
+        <img src="SWOOP.png" alt="SWOOP" /> SWOOP
+    </a>
+    <a href="https://jumper.exchange/es?fromChain=25&fromToken=0x0000000000000000000000000000000000000000&toChain=25&toToken=0x9Ef3fc220867F6cF5655Db3d950cDA67A3a92F9f" target="_blank" class="button-link">
+        <img src="JUMPER.jpeg" alt="JUMPER" />JUMPER
+    </a>
+</div>
+
+
+<div id="roadMap" class="content-tap">
+    <h2>Road Map</h2>
+    <p>Check out our <a href="https://infograph.venngage.com/ps/kZxFvP4Yyqc" target="_blank" class="button-link">Blazzy Road Map</a> and join our mission!</p>
+</div>
+
+<div id="tokenDistribution" class="content-tap">
+    <h2>Token Distribution</h2>
+    <p>BLAZZY TOKEN DISTRIBUTION:</p>
+    <ul>
+        <ul>
+            <li><strong>Max Supply:</strong> 1 Billion Tokens – The total maximum supply of tokens is capped at 1 billion, providing a clear and sustainable tokenomics structure for the Blazzy ecosystem.</li>
+            <li><strong>Liquidity Pool:</strong> 845,000,000 Tokens – A significant portion of the total supply, allocated to ensure deep liquidity, promoting stable trading and long-term participation within the Blazzy platform.</li>
+            <li><strong>Remaining Token Allocation:</strong>
+                <ul>
+                    <li><strong>Airdrop:</strong> 45,000,000 Tokens – These tokens will be distributed through airdrop initiatives to foster community growth and reward early supporters.</li>
+                    <li><strong>Team Drop:</strong> 10,000,000 Tokens – Aimed at incentivizing the development team to continue driving innovation within the Blazzy ecosystem.</li>
+                    <li><strong>Burn:</strong> 5,000,000 Tokens – Tokens will be permanently burned, reducing the overall supply and enhancing scarcity to potentially increase demand.</li>
+                    <li><strong>Stake Farm Team Finance:</strong> 2,000,000 Tokens – Allocated to the staking farm for team financial management, supporting rewards and ecosystem sustainability.</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <!-- Adding PNG image here -->
+        <li><img src="C:\Users\15-FA1030\WEBNUEVA\allocation.jpeg" alt="Description of Image" /></li>
+    </ul>
+    
+    <a href="https://cronoscan.com/address/0x5f028f49a7443f34aedfc19ed986c92243d98ef5" target="_blank" class="button-link">Check Liquidity</a>
+    <a href="https://cronoscan.com/address/0x5f028f49a7443f34aedfc19ed986c92243d98ef5" target="_blank" class="button-link">Token transactions</a>
+    <a href="https://cronoscan.com/address/0x5f028f49a7443f34aedfc19ed986c92243d98ef5" target="_blank" class="button-link">check blazzy contract</a>
+</div>
+</div>
+
+<div id="metaRoom" class="content-tap">
+    <h2>Meta Room</h2>
+    <p>We are launching straight into the Metaverse! Join our future!</p>
+    
+</div>
+
+<div id="socialMedia" class="content-tap">
+    <h2>Social Media</h2>
+    <a href="https://x.com/BLIZZYCRO" target="_blank" class="button-link">Twitter</a>
+    <a href="https://discord.com/invite/TQhtGG24pP" target="_blank" class="button-link">Discord</a>
+    <a href="https://t.me/+6uqs-4CqjrpjZWFh" target="_blank" class="button-link">Telegram</a>
+    <a href="https://github.com/WELCOMETTMATRIX/BLAZZY" target="_blank" class="button-link">GitHub</a>
+</div>
+
+<div id="livePrice" class="content-tap">
+    <h2>Live Price</h2>
+    <iframe height="100%" width="100%" src="https://www.geckoterminal.com/es/cro/pools/0x5f028f49a7443f34aedfc19ed986c92243d98ef5?embed=1&info=1&swaps=1&grayscale=1&light_chart=1" frameborder="0" allow="clipboard-write" allowfullscreen></iframe>
+</div>
+
+<div id="telegramAI" class="content-tap">
+    <h2>Telegram AI</h2>
+    <p>Explore our Telegram bots: @BLAZZYCROBOT, @BLAZZYAIBOT, @BLAZZYDIREBOT, and more!</p>
+    <h2>🔥💻 Blazzy AI: The Future of AI Innovation! 🚀🌐 From cutting-edge technology to groundbreaking solutions, Blazzy is transforming the way we interact with AI. 🤖💡 Ready to level up your tech game with Blazzy? Join the revolution! 🌟🔮 #AIRevolution #BlazzyAIS!</h2>
+    <p>@BLAZZYCROBOT! <a href="https://web.telegram.org/k/#@BLAZZYCROBOT" target="_blank" class="button-link">@BLAZZYCROBOT</a></p>
+    <p>@BLAZZYAIBOT! <a href="https://web.telegram.org/k/#@BLAZZYAIBOT" target="_blank" class="button-link">@BLAZZYAIBOT</a></p>
+    <p>@BLAZZYDIREBOT! <a href="https://web.telegram.org/k/#@BLAZZYDIREBOT" target="_blank" class="button-link">@BLAZZYDIREBOT</a></p>
+</div>
+<div id="stake" class="content-tap">
+    <h2>🌟 Stake & Earn 🌟</h2>
+    <h3>🔥 Stake Blazzy CRO MemeTokens and Reap the Benefits! 🔥</h3>
+    <p>
+        <img src="C:\Users\15-FA1030\WEBNUEVA\SECURE.png" alt="Stake TEAM FINANCE" style="max-width: 100px; height: auto; vertical-align: middle; margin-right: 10px;">
+        💰 **Earn Rewards**: Stake your BLAZZY Tokens and unlock rewards effortlessly!  
+        🚀 Join the journey with  
+        <a href="https://www.team.finance/view-coin/0x9ef3fc220867f6cf5655db3d950cda67a3a92f9f?name=BLAZZY%20&symbol=BLZ&chainid=0x19&_gl=1*nai4k0*_gcl_au*MTE0OTgyNjg3NC4xNzMzNDM5MzA2" target="_blank" class="button-link">Stake TEAM FINANCE</a>.
+    </p>
+    <p>
+        🔗 **ThirdWeb Contract (USDT) COMING SOON: Stake using our trusted platform to maximize your returns.  
+        🌍 Explore the contract here:  
+        <a href="https://explorer.cronos.org/address/0xA57719bE1dbF2532f9384cdCb77e029EC5840924" target="_blank" class="button-link">Stake THIRDWEB CONTRACT (USDT)</a>
+    </p>
+</div>
+
+
+
+<!-- Music Player -->
+<div class="music-player">
+    <audio id="bg-music" loop autoplay>
+        <source src="https://ipfs.io/ipfs/QmWvFJuNdhw9eK1YfgKgPqEvznNYqwxdDn4QwNorqqMv9Z?filename=audio_0_Feel_free_to_dive_in__ask_questions__and_make_the_most_out_of_your_experience__Once_again__welcome_a~.mp3" type="audio/mp3">
+      </audio>
+      
+    <div class="music-controls">
+        <button onclick="playMusic()">Play</button>
+        <button onclick="pauseMusic()">Pause</button>
+        <input type="range" class="slider" id="volumeControl" min="0" max="1" step="0.1" onchange="adjustVolume()">
+    </div>
+</div>
+<div id="security" class="content-tap">
+    <h2>🔒 Security</h2>
+    <p>🌟 Blazzy Token is built on trust and transparency, featuring top-tier 🔐 security measures and thorough ✅ audits to protect our users. 🚀</p>
+    <a href="https://gopluslabs.io/token-security/25/0x9ef3fc220867f6cf5655db3d950cda67a3a92f9f" target="_blank" class="button-link">Go Plus 🔗</a>
+    <a href="https://terminal.hapilabs.one/guest-address-check/CRO/0x9ef3fc220867f6cf5655db3d950cda67a3a92f9f" target="_blank" class="button-link">Hapilabs Check 🔍</a>
+
+    <h2>🌐 Trusted Platforms 🚀</h2>
+    <p>Blazzy integrates with leading platforms to deliver the best experience:</p>
+    
+    <div class="logo-grid">
+        <!-- DEXTools -->
+        <a href="https://www.dextools.io/" target="_blank" class="button-link">
+            <img src="https://www.dextools.io/app/en" alt="DEXTools " style="width: 50px;" />
+            <span></span>
+        </a>
+        
+        <!-- CronaSwap -->
+        <a href="https://app.cronaswap.org/" target="_blank" class="button-link">
+            <img src="https://app.cronaswap.org/favicon.ico" alt="CronaSwap " style="width: 50px;" />
+            <span>CronaSwap</span>
+        </a>
+        
+        <!-- Jumper Exchange -->
+        <a href="https://jumper.exchange/" target="_blank" class="button-link">
+            <img src="https://jumper.exchange/favicon.png" alt="Jumper Exchange " style="width: 50px;" />
+            <span>Jumper Exchange</span>
+        </a>
+        
+        <!-- DEXScanner -->
+        <a href="https://dexscreener.com/" target="_blank" class="button-link">
+            <img src="https://dexscreener.com/static/media/favicon-32x32.png" alt="DEXScanner " style="width: 50px;" />
+            <span></span>
+        </a>
+        
+        <!-- Hapilabs -->
+        <a href="https://hapilabs.one/" target="_blank" class="button-link">
+            <img src="https://terminal.hapilabs.one/favicon.ico" alt="Hapilabs " style="width: 50px;" />
+            <span></span>
+        </a>
+    </div>
+</div>
+
+<div id="explorer" class="content-tap">
+    <h2>🧭 Explorer</h2>
+    <p>🔍 Dive into Blazzy Token's blockchain details using our trusted explorers:</p>
+    <a href="https://cronoscan.com/address/0x9Ef3fc220867F6cF5655Db3d950cDA67A3a92F9f" target="_blank" class="button-link">CRONOSCAN 🌟</a>
+    <a href="https://explorer.cronos.org/address/0x9ef3fc220867f6cf5655db3d950cda67a3a92f9f" target="_blank" >Explorer Cronos 🌍</a>
+</div>
+
+
+<!-- Slide Text -->
+<div class="slider">
+    <div class="moving-text">
+        🚀 The Cronos MemeToken of the Future 🌟 <br>
+        🛡️ No owner | 📈 1 B SUPPLY | 🌌 TO THE NEXT GALAXY AND BEYOND! 🚀
+    </div>
+</div>
+
+
+
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu');
+        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    function openTap(tapId) {
+        // Hide all taps
+        const taps = document.querySelectorAll('.content-tap');
+        taps.forEach(tap => tap.classList.remove('show'));
+
+        // Show the selected tap
+        const selectedTap = document.getElementById(tapId);
+        selectedTap.classList.add('show');
+
+        // Close menu
+        const menu = document.getElementById('menu');
+        menu.style.display = 'none';
+    }
+
+
+    function playMusic() {
+    var music = document.getElementById('bg-music');
+    if (music.paused) {
+        music.play();
+    }
+}
+
+
+    function pauseMusic() {
+        document.getElementById('bg-music').pause();
+    }
+
+    function adjustVolume() {
+        const volume = document.getElementById('volumeControl').value;
+        document.getElementById('bg-music').volume = volume;
+    }
+</script>
+</body>
+</html>  $BLZ
